@@ -8,6 +8,9 @@ const mongoose = require('mongoose')
 const cors = require('cors')
 const morgan = require('morgan')
 
+const upload = require('./config/multer')
+
+
 const PORT = process.env.PORT ? process.env.PORT : "3000"
 
 const authCtrl = require('./controllers/auth')
