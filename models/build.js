@@ -20,15 +20,25 @@ buildSchema = new mongoose.Schema({
       },
       status:{
         type:String,
+        enum:['in progress','completed'],
+        default:'in progress'
       },
       caption:{
         type:String,
       },
-      timeTacken:{
-        type:int
+      timeTaken:{
+        type:Number
       },
-      like:{
+      like:[{
          type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      },
+      }],
+      setId:{
+        type:String,
+        enum:[],
+      }
 },{ timestamps: true })
+const Build = mongoose.model('Build', buildSchema)
+module.exports = Build
+
+
