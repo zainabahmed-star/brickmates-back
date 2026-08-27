@@ -18,6 +18,7 @@ const usersCtrl = require('./controllers/users')
 const setsCtrl = require('./controllers/set')
 const buildsCtrl =require('./controllers/builds')
 const listingsCtrl = require('./controllers/listings')
+const commentsCtrl = require('./controllers/comments')
 
 const verifyToken = require('./middleware/verify-token')
 
@@ -46,10 +47,13 @@ app.put('/users/:userId/follow', verifyToken, usersCtrl.followToggle)
 
 app.get('/sets' , setsCtrl.index)
 
-app.post('/builds' , verifyToken, buildsCtrl.create)
+app.post('/builds' , verifyToken, buildsCtrl.create,upload.single('image'))
 app.get('/builds' , verifyToken, buildsCtrl.index)
 app.get('/builds/:buildId', verifyToken, buildsCtrl.show)
 
+
+app.post('/builds/:buildId/comments', verifyToken, commentsCtrl.create)
+app.delete('/comments/:commentId', verifyToken, commentsCtrl.deleteComment)
 app.listen(PORT, () => {
   console.log(`The express app is ready on port ${PORT}! 😀`)
 })
