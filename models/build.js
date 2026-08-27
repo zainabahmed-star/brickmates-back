@@ -33,10 +33,10 @@ buildSchema = new mongoose.Schema({
          type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       }],
-      setId:{
-        type:String,
-        enum:[],
-      }
+      setId:[{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Set",
+      }]
 },{ timestamps: true })
 const Build = mongoose.model('Build', buildSchema)
 module.exports = Build
