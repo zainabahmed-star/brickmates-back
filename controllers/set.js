@@ -57,4 +57,5 @@ const search = async (req, res) => {
 
         module.exports ={
             index,
+            search
         }
