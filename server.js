@@ -46,6 +46,9 @@ app.put('/users/:userId/follow', verifyToken, usersCtrl.followToggle)
 app.get('/sets' , setsCtrl.index)
 
 app.post('/builds' , buildsCtrl.create)
+app.get('/builds' , buildsCtrl.index)
+app.get('/builds/:buildId', buildsCtrl.show)
+
 app.listen(PORT, () => {
   console.log(`The express app is ready on port ${PORT}! 😀`)
 })
