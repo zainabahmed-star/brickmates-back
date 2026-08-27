@@ -42,10 +42,11 @@ app.post('/auth/sign-in', authCtrl.signIn)
 //user routes
 app.get('/users', verifyToken, usersCtrl.index)
 app.get('/users/:userId', verifyToken, usersCtrl.show)
-app.put('/users/:userId', verifyToken, usersCtrl.update)
+app.put('/users/:userId',upload.single('avatar'),verifyToken, usersCtrl.update)
 app.put('/users/:userId/follow', verifyToken, usersCtrl.followToggle)
 
 app.get('/sets' , setsCtrl.index)
+app.get('/sets/search', setsCtrl.search)
 
 app.post('/builds' , verifyToken, buildsCtrl.create,upload.single('image'))
 app.get('/builds' , verifyToken, buildsCtrl.index)
@@ -54,6 +55,12 @@ app.get('/builds/:buildId', verifyToken, buildsCtrl.show)
 
 app.post('/builds/:buildId/comments', verifyToken, commentsCtrl.create)
 app.delete('/comments/:commentId', verifyToken, commentsCtrl.deleteComment)
+app.get('/listings', verifyToken, listingsCtrl.index)
+app.get('/listings/:listingId', verifyToken, listingsCtrl.show)
+app.post('/listings', verifyToken, upload.array('photos'), listingsCtrl.create)
+app.put('/listings/:listingId', verifyToken, upload.array('photos'), listingsCtrl.update)
+app.delete('/listings/:listingId', verifyToken, listingsCtrl.deleteListing)
+
 app.listen(PORT, () => {
   console.log(`The express app is ready on port ${PORT}! 😀`)
 })
