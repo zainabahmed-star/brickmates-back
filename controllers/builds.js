@@ -1,5 +1,6 @@
 const cloudinary = require('../config/cloudinary');
 const Build = require('../models/build');
+const Set = require('../models/set');
 const axios = require('axios');
 
 const uploadMedia = (fileBuffer, resourceType) => {
@@ -23,12 +24,12 @@ const uploadMedia = (fileBuffer, resourceType) => {
 };
 
 const create = async (req, res) => {
-  try {
-    const ownerId = req.user_id    
+console.log(req);
 
-    const set = await axios.get(`https://rebrickable.com/api/v3/lego/sets/${req.body.setNum}/`, {
-    headers: { Authorization: `key ${process.env.REBRICKABLE_API_KEY}` }
-    })
+  try {
+    const ownerId = req.user._id    
+     const sets = await Set.find()
+
     
     let image = {}
 
@@ -48,18 +49,13 @@ const create = async (req, res) => {
       status: req.body.status,
       caption: req.body.caption,
       timeTaken: req.body.timeTaken,
-      set: {
-    setNum: set.data.set_num,
-    name: set.data.name,
-    year: set.data.year,
-    pieceCount: set.data.num_parts,
-    image: set.data.set_img_url,
-    },
+      set: sets.setNum
     }
 
     const build = await (await Build.create(newBuildData)).populate('owner')
 
     res.status(201).json(build)
+
   } catch (err) {
     res.status(500).json({ err: err.message })
   }

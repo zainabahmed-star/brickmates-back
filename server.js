@@ -46,16 +46,9 @@ app.put('/users/:userId/follow', verifyToken, usersCtrl.followToggle)
 
 app.get('/sets' , setsCtrl.index)
 
-//listing routes
-app.get('/listings', verifyToken, listingsCtrl.index)
-app.get('/listings/:listingId', verifyToken, listingsCtrl.show)
-app.post('/listings', verifyToken, upload.array('photos'), listingsCtrl.create)
-app.put('/listings/:listingId', verifyToken, upload.array('photos'), listingsCtrl.update)
-app.delete('/listings/:listingId', verifyToken, listingsCtrl.deleteListing)
-
-app.post('/builds' , buildsCtrl.create)
-app.get('/builds' , buildsCtrl.index)
-app.get('/builds/:buildId', buildsCtrl.show)
+app.post('/builds' , verifyToken, buildsCtrl.create)
+app.get('/builds' , verifyToken, buildsCtrl.index)
+app.get('/builds/:buildId', verifyToken, buildsCtrl.show)
 
 app.listen(PORT, () => {
   console.log(`The express app is ready on port ${PORT}! 😀`)
