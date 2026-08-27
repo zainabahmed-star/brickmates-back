@@ -41,7 +41,7 @@ app.post('/auth/sign-in', authCtrl.signIn)
 //user routes
 app.get('/users', verifyToken, usersCtrl.index)
 app.get('/users/:userId', verifyToken, usersCtrl.show)
-app.put('/users/:userId', verifyToken, usersCtrl.update)
+app.put('/users/:userId',upload.single('avatar'),verifyToken, usersCtrl.update)
 app.put('/users/:userId/follow', verifyToken, usersCtrl.followToggle)
 
 app.get('/sets' , setsCtrl.index)
