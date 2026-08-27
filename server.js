@@ -51,10 +51,13 @@ app.get('/sets/search', setsCtrl.search)
 app.post('/builds' , verifyToken, buildsCtrl.create,upload.single('image'))
 app.get('/builds' , verifyToken, buildsCtrl.index)
 app.get('/builds/:buildId', verifyToken, buildsCtrl.show)
-
+app.put('/builds/:buildId', verifyToken, upload.single('image'), buildsCtrl.update)
+app.delete('/builds/:buildId', verifyToken, buildsCtrl.deleteBuild)
+app.put('/builds/:buildId/like', verifyToken, buildsCtrl.likeToggle)
 
 app.post('/builds/:buildId/comments', verifyToken, commentsCtrl.create)
 app.delete('/comments/:commentId', verifyToken, commentsCtrl.deleteComment)
+
 app.get('/listings', verifyToken, listingsCtrl.index)
 app.get('/listings/:listingId', verifyToken, listingsCtrl.show)
 app.post('/listings', verifyToken, upload.array('photos'), listingsCtrl.create)
