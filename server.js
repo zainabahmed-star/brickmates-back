@@ -51,6 +51,12 @@ app.post('/builds' , verifyToken, buildsCtrl.create)
 app.get('/builds' , verifyToken, buildsCtrl.index)
 app.get('/builds/:buildId', verifyToken, buildsCtrl.show)
 
+app.get('/listings', verifyToken, listingsCtrl.index)
+app.get('/listings/:listingId', verifyToken, listingsCtrl.show)
+app.post('/listings', verifyToken, upload.array('photos'), listingsCtrl.create)
+app.put('/listings/:listingId', verifyToken, upload.array('photos'), listingsCtrl.update)
+app.delete('/listings/:listingId', verifyToken, listingsCtrl.deleteListing)
+
 app.listen(PORT, () => {
   console.log(`The express app is ready on port ${PORT}! 😀`)
 })
