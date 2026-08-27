@@ -17,6 +17,7 @@ const authCtrl = require('./controllers/auth')
 const usersCtrl = require('./controllers/users')
 const setsCtrl = require('./controllers/set')
 const buildsCtrl =require('./controllers/builds')
+const listingsCtrl = require('./controllers/listings')
 
 const verifyToken = require('./middleware/verify-token')
 
