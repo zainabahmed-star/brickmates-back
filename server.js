@@ -17,6 +17,7 @@ const authCtrl = require('./controllers/auth')
 const usersCtrl = require('./controllers/users')
 const setsCtrl = require('./controllers/set')
 const buildsCtrl =require('./controllers/builds')
+const listingsCtrl = require('./controllers/listings')
 
 const verifyToken = require('./middleware/verify-token')
 
@@ -45,7 +46,12 @@ app.put('/users/:userId/follow', verifyToken, usersCtrl.followToggle)
 
 app.get('/sets' , setsCtrl.index)
 
-
+//listing routes
+app.get('/listings', verifyToken, listingsCtrl.index)
+app.get('/listings/:listingId', verifyToken, listingsCtrl.show)
+app.post('/listings', verifyToken, upload.array('photos'), listingsCtrl.create)
+app.put('/listings/:listingId', verifyToken, upload.array('photos'), listingsCtrl.update)
+app.delete('/listings/:listingId', verifyToken, listingsCtrl.deleteListing)
 
 app.post('/builds' , buildsCtrl.create)
 app.listen(PORT, () => {
