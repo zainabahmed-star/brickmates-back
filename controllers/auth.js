@@ -42,6 +42,8 @@ const signUp = async (req, res) => {
         }
 
         const user = await User.create(userData)
+        console.log(user);
+        
 
         // create the payload
         const payload = { username: user.username, _id: user._id }
