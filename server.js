@@ -16,7 +16,7 @@ const PORT = process.env.PORT ? process.env.PORT : "3000"
 const authCtrl = require('./controllers/auth')
 const usersCtrl = require('./controllers/users')
 const setsCtrl = require('./controllers/set')
-
+const buildsCtrl =require('./controllers/builds')
 
 const verifyToken = require('./middleware/verify-token')
 
@@ -44,6 +44,8 @@ app.put('/users/:userId', verifyToken, usersCtrl.update)
 app.put('/users/:userId/follow', verifyToken, usersCtrl.followToggle)
 
 app.get('/sets' , setsCtrl.index)
+
+app.post('/builds' , buildsCtrl.create)
 app.listen(PORT, () => {
   console.log(`The express app is ready on port ${PORT}! 😀`)
 })
