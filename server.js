@@ -78,6 +78,21 @@ app.delete('/listings/:listingId', verifyToken, listingsCtrl.deleteListing)
 io.on('connection', (socket) => {
   console.log('Socket connected: ', socket.id)
 
+ socket.on('chat message', (messageData) => {
+  console.log('Chat event received:', messageData)
+
+  const newMessage = {
+    id: `${socket.id}-${Date.now()}`,
+    username: messageData.username,
+    text: messageData.text,
+  }
+  
+  console.log('Chat event broadcast:', newMessage)
+
+  io.emit('chat message', newMessage)
+})
+
+  
   socket.on('disconnect', () => {
     console.log('Socket disconnected: ', socket.id)
   })
