@@ -28,8 +28,10 @@ const setsCtrl = require('./controllers/set')
 const buildsCtrl =require('./controllers/builds')
 const listingsCtrl = require('./controllers/listings')
 const commentsCtrl = require('./controllers/comments')
+const messagesCtrl = require('./controllers/messages')
 
 const verifyToken = require('./middleware/verify-token')
+const Message = require('./models/message')
 
 mongoose.connect(process.env.MONGODB_URI)
 
@@ -75,9 +77,38 @@ app.post('/listings', verifyToken, upload.array('photos'), listingsCtrl.create)
 app.put('/listings/:listingId', verifyToken, upload.array('photos'), listingsCtrl.update)
 app.delete('/listings/:listingId', verifyToken, listingsCtrl.deleteListing)
 
+//message routes
+app.get('/messages/:roomId', verifyToken, messagesCtrl.index)
+
 io.on('connection', (socket) => {
   console.log('Socket connected: ', socket.id)
 
+socket.on('join room', (roomId) => {
+    socket.join(roomId)
+    console.log(`Socket ${socket.id} joined room ${roomId}`)
+  })
+
+  socket.on('leave room', (roomId) => {
+    socket.leave(roomId)
+  })
+
+socket.on('chat message', async (messageData) => {
+    console.log('Chat event received:', messageData)
+
+    const saved = await Message.create({
+      roomId: messageData.roomId,
+      sender: messageData.senderId,
+      username: messageData.username,
+      text: messageData.text,
+    })
+
+    console.log('Chat event broadcast:', saved)
+
+    io.to(messageData.roomId).emit('chat message', saved)
+  })
+
+
+  
   socket.on('disconnect', () => {
     console.log('Socket disconnected: ', socket.id)
   })
