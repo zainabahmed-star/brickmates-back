@@ -36,8 +36,7 @@ buildSchema = new mongoose.Schema({
       setId:[{
       type: mongoose.Schema.Types.ObjectId,
       ref: "Set",
-      }],
-    comment:[commentSchema]
+      }]
 },{ timestamps: true })
 const Build = mongoose.model('Build', buildSchema)
 module.exports = Build
