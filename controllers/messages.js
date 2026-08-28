@@ -12,7 +12,7 @@ const index = async (req, res) => {
 
 const conversations = async (req, res) => {
     try {
-        const currentUserId = req.user._id
+        const currentUserId = req.user._id.toString()
 
         const rooms = await Message.distinct('roomId', {
             roomId: { $regex: currentUserId },
@@ -22,6 +22,8 @@ const conversations = async (req, res) => {
             rooms.map(async (roomId) => {
                 const ids = roomId.split('_')
                 const otherUserId = ids.find((id) => id !== currentUserId)
+
+                if (!otherUserId) return null
 
                 const otherUser = await User.findById(otherUserId).select('username avatar')
 
@@ -35,11 +37,13 @@ const conversations = async (req, res) => {
             })
         )
 
-        conversationList.sort((a, b) => {
+        const filteredList = conversationList.filter((c) => c !== null)
+
+         filteredList.sort((a, b) => {
             return new Date(b.lastMessage?.createdAt) - new Date(a.lastMessage?.createdAt)
         })
 
-        res.json(conversationList)
+        res.json(filteredList)
     } catch (err) {
         res.status(500).json({ err: err.message })
     }
