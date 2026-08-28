@@ -31,6 +31,7 @@ const commentsCtrl = require('./controllers/comments')
 const messagesCtrl = require('./controllers/messages')
 
 const verifyToken = require('./middleware/verify-token')
+const Message = require('./models/message')
 
 mongoose.connect(process.env.MONGODB_URI)
 
