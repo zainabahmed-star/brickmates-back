@@ -3,13 +3,22 @@ dns.setServers(["8.8.8.8", "1.1.1.1"])
 
 const dotenv = require('dotenv').config()
 const express = require('express')
-const app = express()
 const mongoose = require('mongoose')
 const cors = require('cors')
 const morgan = require('morgan')
+const http = require('http')
+const { Server } = require('socket.io')
 
 const upload = require('./config/multer')
 
+const app = express()
+const server = http.createServer(app)
+
+const io = new Server(server, {
+  cors: {
+    origin: 'http://localhost:5173',
+  },
+})
 
 const PORT = process.env.PORT ? process.env.PORT : "3000"
 
@@ -42,13 +51,14 @@ app.post('/auth/sign-in', authCtrl.signIn)
 //user routes
 app.get('/users', verifyToken, usersCtrl.index)
 app.get('/users/:userId', verifyToken, usersCtrl.show)
-app.put('/users/:userId',upload.single('avatar'),verifyToken, usersCtrl.update)
+app.put('/users/:userId',verifyToken,upload.single('avatar'),usersCtrl.update)
 app.put('/users/:userId/follow', verifyToken, usersCtrl.followToggle)
 
 app.get('/sets' , setsCtrl.index)
 app.get('/sets/search', setsCtrl.search)
 
-app.post('/builds' , verifyToken, buildsCtrl.create,upload.single('image'))
+//builds routes
+app.post('/builds' , verifyToken, upload.single('image'),buildsCtrl.create)
 app.get('/builds' , verifyToken, buildsCtrl.index)
 app.get('/builds/:buildId', verifyToken, buildsCtrl.show)
 app.put('/builds/:buildId', verifyToken, upload.single('image'), buildsCtrl.update)
@@ -58,12 +68,21 @@ app.put('/builds/:buildId/like', verifyToken, buildsCtrl.likeToggle)
 app.post('/builds/:buildId/comments', verifyToken, commentsCtrl.create)
 app.delete('/comments/:commentId', verifyToken, commentsCtrl.deleteComment)
 
+//listing routes
 app.get('/listings', verifyToken, listingsCtrl.index)
 app.get('/listings/:listingId', verifyToken, listingsCtrl.show)
 app.post('/listings', verifyToken, upload.array('photos'), listingsCtrl.create)
 app.put('/listings/:listingId', verifyToken, upload.array('photos'), listingsCtrl.update)
 app.delete('/listings/:listingId', verifyToken, listingsCtrl.deleteListing)
 
-app.listen(PORT, () => {
+io.on('connection', (socket) => {
+  console.log('Socket connected: ', socket.id)
+
+  socket.on('disconnect', () => {
+    console.log('Socket disconnected: ', socket.id)
+  })
+})
+
+server.listen(PORT, () => {
   console.log(`The express app is ready on port ${PORT}! 😀`)
 })
