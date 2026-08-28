@@ -79,6 +79,7 @@ app.delete('/listings/:listingId', verifyToken, listingsCtrl.deleteListing)
 
 //message routes
 app.get('/messages/:roomId', verifyToken, messagesCtrl.index)
+app.get('/messages', verifyToken, messagesCtrl.conversations)
 
 io.on('connection', (socket) => {
   console.log('Socket connected: ', socket.id)

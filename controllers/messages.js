@@ -1,4 +1,5 @@
 const Message = require('../models/message')
+const User = require('../models/user')
 
 const index = async (req, res) => {
   try {
@@ -9,6 +10,42 @@ const index = async (req, res) => {
   }
 }
 
+const conversations = async (req, res) => {
+    try {
+        const currentUserId = req.user._id
+
+        const rooms = await Message.distinct('roomId', {
+            roomId: { $regex: currentUserId },
+        })
+
+        const conversationList = await Promise.all(
+            rooms.map(async (roomId) => {
+                const ids = roomId.split('_')
+                const otherUserId = ids.find((id) => id !== currentUserId)
+
+                const otherUser = await User.findById(otherUserId).select('username avatar')
+
+                const lastMessage = await Message.findOne({ roomId }).sort({ createdAt: -1 })
+
+                return {
+                    roomId,
+                    otherUser,
+                    lastMessage,
+                }
+            })
+        )
+
+        conversationList.sort((a, b) => {
+            return new Date(b.lastMessage?.createdAt) - new Date(a.lastMessage?.createdAt)
+        })
+
+        res.json(conversationList)
+    } catch (err) {
+        res.status(500).json({ err: err.message })
+    }
+}
+
 module.exports = {
   index,
+  conversations
 }
