@@ -58,6 +58,7 @@ app.put('/users/:userId/follow', verifyToken, usersCtrl.followToggle)
 
 app.get('/sets' , setsCtrl.index)
 app.get('/sets/search', setsCtrl.search)
+app.get('/sets/:setId', setsCtrl.show)
 
 //builds routes
 app.post('/builds' , verifyToken, upload.single('image'),buildsCtrl.create)
