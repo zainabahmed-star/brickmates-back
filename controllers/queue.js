@@ -73,7 +73,21 @@ const deleteQueue = async (req, res) => {
     }
 }
 
+const status = async (req, res) => {
+    try {
+        const entry = await QueueEntry.findById(req.params.queueId)
+        if (!entry) {
+            return res.status(404).json({ err: 'Queue entry not found.' })
+        }
+        res.json(entry)
+    } catch (err) {
+        res.status(500).json({ err: err.message })
+    }
+}
+
+
 module.exports = {
     create,
-    deleteQueue
+    deleteQueue,
+    status
 }

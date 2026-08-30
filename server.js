@@ -86,6 +86,7 @@ app.get('/messages', verifyToken, messagesCtrl.conversations)
 //queue routes
 app.post('/queue', verifyToken, queueCtrl.create)
 app.delete('/queue/:queueId', verifyToken, queueCtrl.deleteQueue)
+app.get('/queue/:queueId/status', verifyToken, queueCtrl.status)
 
 io.on('connection', (socket) => {
   console.log('Socket connected: ', socket.id)
