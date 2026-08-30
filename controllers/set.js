@@ -71,9 +71,27 @@ const show = async (req, res) => {
     res.status(500).json({ err: err.message })
   }
 }
+const themes = async (req, res) => {
+  try {
+    const response = await axios.get(`${REBRICKABLE_BASE_URL}/themes/`, {
+      headers: { Authorization: `key ${process.env.REBRICKABLE_API_KEY}` },
+      params: { page_size: 200 },
+    });
+
+    const themeList = response.data.results.map((theme) => ({
+      id: theme.id,
+      name: theme.name,
+    }));
+
+    res.json(themeList);
+  } catch (err) {
+    res.status(500).json({ err: err.message });
+  }
+};
 
 module.exports = {
   index,
   search,
   show,
+  themes,
 }
