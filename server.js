@@ -100,7 +100,7 @@ socket.on('chat message', async (messageData) => {
 
     const saved = await Message.create({
       roomId: messageData.roomId,
-      sender: messageData.senderId,
+      sender: messageData.sender,
       username: messageData.username,
       text: messageData.text,
     })
