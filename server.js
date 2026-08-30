@@ -29,6 +29,8 @@ const buildsCtrl =require('./controllers/builds')
 const listingsCtrl = require('./controllers/listings')
 const commentsCtrl = require('./controllers/comments')
 const messagesCtrl = require('./controllers/messages')
+const queueCtrl = require('./controllers/queue')
+const buildMatchCtrl = require('./controllers/buildMatch')
 
 const verifyToken = require('./middleware/verify-token')
 const Message = require('./models/message')
@@ -82,6 +84,14 @@ app.delete('/listings/:listingId', verifyToken, listingsCtrl.deleteListing)
 //message routes
 app.get('/messages/:roomId', verifyToken, messagesCtrl.index)
 app.get('/messages', verifyToken, messagesCtrl.conversations)
+//queue routes
+app.post('/queue', verifyToken, queueCtrl.create)
+app.delete('/queue/:queueId', verifyToken, queueCtrl.deleteQueue)
+app.get('/queue/:queueId/status', verifyToken, queueCtrl.status)
+
+//buildmatch routes
+app.get('/matches/:matchId', verifyToken, buildMatchCtrl.show)
+app.put('/matches/:matchId', verifyToken, buildMatchCtrl.update)
 
 io.on('connection', (socket) => {
   console.log('Socket connected: ', socket.id)
