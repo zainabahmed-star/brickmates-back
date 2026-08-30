@@ -87,7 +87,7 @@ const themes = async (req, res) => {
   } catch (err) {
     res.status(500).json({ err: err.message });
   }
-};
+}//check merge
 
 module.exports = {
   index,
