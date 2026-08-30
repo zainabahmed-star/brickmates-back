@@ -96,6 +96,8 @@ app.put('/matches/:matchId', verifyToken, buildMatchCtrl.update)
 io.on('connection', (socket) => {
   console.log('Socket connected: ', socket.id)
 
+  app.set('io', io)
+
 socket.on('join room', (roomId) => {
     socket.join(roomId)
     console.log(`Socket ${socket.id} joined room ${roomId}`)

@@ -38,7 +38,10 @@ const create = async (req, res) => {
                 status: 'matched',
             })
 
-            return res.status(201).json({ matched: true, match })
+          const io = req.app.get('io')
+          io.to(waitingEntry.user.toString()).emit('build match found', { matchId: match._id })
+
+          return res.status(201).json({ matched: true, match })
         }
 
         const newEntry = await QueueEntry.create({
