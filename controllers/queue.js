@@ -54,6 +54,26 @@ const create = async (req, res) => {
     }
 }
 
+const deleteQueue = async (req, res) => {
+    try {
+        const entry = await QueueEntry.findById(req.params.queueId)
+        if (!entry) {
+            return res.status(404).json({ err: 'Queue entry not found.' })
+        }
+        if (entry.user.toString() !== req.user._id) {
+            return res.status(403).json({ err: 'Unauthorized.' })
+        }
+
+        entry.status = 'cancelled'
+        await entry.save()
+
+        res.json({ message: 'Left the queue.' })
+    } catch (err) {
+        res.status(500).json({ err: err.message })
+    }
+}
+
 module.exports = {
-    create
+    create,
+    deleteQueue
 }
