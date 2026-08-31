@@ -13,9 +13,18 @@ const buildMatchSchema = new mongoose.Schema({
     setName: {
         type: String,
     },
-    currentStep: {
+    steps: [{
+        user: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+        },
+        currentStep: {
+            type: Number,
+            default: 0,
+        },
+    }],
+    totalSteps: {
         type: Number,
-        default: 0,
     },
     totalSteps: {
         type: Number,
