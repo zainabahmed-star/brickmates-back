@@ -8,6 +8,7 @@ const mapSet = (set) => ({
   year: set.year,
   pieceCount: set.num_parts,
   image: set.set_img_url,
+  themeId: set.theme_id,
 })
 
 const index = async (req, res) => {
