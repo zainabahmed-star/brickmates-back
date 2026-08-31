@@ -1,6 +1,8 @@
 const Build = require("../models/build")
 
 const create = async (req, res) => {
+    console.log(req.body);
+    
 try {
 
     const build = await Build.findById(req.params.buildId)
