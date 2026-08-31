@@ -92,7 +92,7 @@ app.get('/queue/:queueId/status', verifyToken, queueCtrl.status)
 
 //buildmatch routes
 app.get('/matches/:matchId', verifyToken, buildMatchCtrl.show)
-app.put('/matches/:matchId', verifyToken, buildMatchCtrl.update)
+app.put('/matches/:matchId/step', verifyToken, buildMatchCtrl.updateStep)
 
 io.on('connection', (socket) => {
   console.log('Socket connected: ', socket.id)

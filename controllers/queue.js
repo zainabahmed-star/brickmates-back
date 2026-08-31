@@ -26,6 +26,10 @@ const create = async (req, res) => {
                 users: [waitingEntry.user, userId],
                 setNum,
                 setName,
+                steps: [
+                 { user: waitingEntry.user, currentStep: 0 },
+                 { user: userId, currentStep: 0 },
+    ],
             })
 
             waitingEntry.status = 'matched'
