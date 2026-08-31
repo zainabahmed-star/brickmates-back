@@ -1,4 +1,19 @@
 const mongoose = require('mongoose')
+commentSchema =new mongoose.Schema({
+    comment:{
+        type:String,
+        required: true,
+    },
+    author:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'User',
+        },
+buildId:{
+    type:mongoose.Schema.Types.ObjectId,
+    ref:'Build'
+},
+
+},{ timestamps: true })
 buildSchema = new mongoose.Schema({
     owner: {
       type: mongoose.Schema.Types.ObjectId,
@@ -40,21 +55,6 @@ buildSchema = new mongoose.Schema({
       comment:[commentSchema]
 },{ timestamps: true })
 
-commentSchema =new mongoose.Schema({
-    comment:{
-        type:String,
-        required: true,
-    },
-    author:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'User',
-        },
-buildId:{
-    type:mongoose.Schema.Types.ObjectId,
-    ref:'Build'
-},
-
-},{ timestamps: true })
 const Build = mongoose.model('Build', buildSchema)
 module.exports = Build
 
