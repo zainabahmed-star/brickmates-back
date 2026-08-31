@@ -94,9 +94,37 @@ const followToggle = async (req, res) => {
     }
 }
 
+const collectionToggle = async (req, res) => {
+    try {
+        const currentUser = await User.findById(req.user._id)
+
+        if (req.params.userId !== req.user._id) {
+            return res.status(403).json({ err: 'Unauthorized.' })
+        }
+
+        const { setId } = req.body
+
+        const isInCollection = currentUser.collectionSetIds.includes(setId)
+
+        if (isInCollection) {
+            currentUser.collectionSetIds.pull(setId)
+        } else {
+            currentUser.collectionSetIds.push(setId)
+        }
+
+        await currentUser.save()
+
+        res.json(currentUser)
+
+    } catch (err) {
+        res.status(400).json({ err: err.message })
+    }
+}
+
 module.exports = {
     index,
     show,
     update,
-    followToggle
+    followToggle,
+    collectionToggle
 }
