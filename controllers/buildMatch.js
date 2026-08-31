@@ -20,7 +20,7 @@ const show = async (req, res) => {
     }
 }
 
-const update = async (req, res) => {
+const updateStep = async (req, res) => {
     try {
         const match = await BuildMatch.findById(req.params.matchId)
 
@@ -33,16 +33,22 @@ const update = async (req, res) => {
             return res.status(403).json({ err: 'Unauthorized.' })
         }
 
-        const updateData = {}
-        if (req.body.currentStep !== undefined) updateData.currentStep = req.body.currentStep
-        if (req.body.totalSteps !== undefined) updateData.totalSteps = req.body.totalSteps
-        if (req.body.status !== undefined) updateData.status = req.body.status
+        const stepEntry = match.steps.find((s) => s.user.toString() === req.user._id)
+        if (stepEntry) {
+            stepEntry.currentStep = req.body.currentStep
+        } else {
+            match.steps.push({ user: req.user._id, currentStep: req.body.currentStep })
+        }
 
-        const updatedMatch = await BuildMatch.findByIdAndUpdate(
-            req.params.matchId,
-            updateData,
-            { new: true }
-        ).populate('users', 'username avatar')
+        await match.save()
+        
+
+        const updatedMatch = await BuildMatch.findByIdAndUpdate(req.params.matchId)
+        .populate('users', 'username avatar')
+        .populate('steps.user', 'username')
+
+        const io = req.app.get('io')
+        io.to(`match_${req.params.matchId}`).emit('step updated', updatedMatch)
 
         res.json(updatedMatch)
     } catch (err) {
@@ -52,5 +58,5 @@ const update = async (req, res) => {
 
 module.exports = {
     show,
-    update,
+    updateStep,
 }

@@ -31,6 +31,7 @@ const commentsCtrl = require('./controllers/comments')
 const messagesCtrl = require('./controllers/messages')
 const queueCtrl = require('./controllers/queue')
 const buildMatchCtrl = require('./controllers/buildMatch')
+const videoCtrl = require('./controllers/video');
 
 const verifyToken = require('./middleware/verify-token')
 const Message = require('./models/message')
@@ -45,12 +46,8 @@ app.use(cors())
 app.use(express.json())
 app.use(morgan('dev'))
 
-// Routes go here
-// app.get('/auth/sign-token', authCtrl.signToken)
-// app.get('/auth/verify-token', authCtrl.verifyToken)
 app.post('/auth/sign-up', authCtrl.signUp)
 app.post('/auth/sign-in', authCtrl.signIn)
-
 
 //user routes
 app.get('/users', verifyToken, usersCtrl.index)
@@ -95,7 +92,9 @@ app.get('/queue/:queueId/status', verifyToken, queueCtrl.status)
 
 //buildmatch routes
 app.get('/matches/:matchId', verifyToken, buildMatchCtrl.show)
-app.put('/matches/:matchId', verifyToken, buildMatchCtrl.update)
+app.put('/matches/:matchId/step', verifyToken, buildMatchCtrl.updateStep)
+
+app.get('/video-token', verifyToken, videoCtrl.getToken);
 
 io.on('connection', (socket) => {
   console.log('Socket connected: ', socket.id)

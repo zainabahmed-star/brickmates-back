@@ -25,6 +25,9 @@ const listingSchema = new mongoose.Schema({
     description: {
         type: String,
     },
+    theme: {
+    type: String,
+    },
     photos: [{
         url: {
             type: String,
