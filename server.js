@@ -71,8 +71,7 @@ app.get('/themes' ,verifyToken, setsCtrl.themes)
 
 app.post('/builds/:buildId/comments', verifyToken, commentsCtrl.create)
 app.delete('/comments/:commentId', verifyToken, commentsCtrl.deleteComment)
-app.post('/builds/:buildId/comments', verifyToken, commentsCtrl.create)
-app.delete('/comments/:commentId', verifyToken, commentsCtrl.deleteComment)
+
 
 //listing routes
 app.get('/listings', verifyToken, listingsCtrl.index)
@@ -81,7 +80,6 @@ app.post('/listings', verifyToken, upload.array('photos'), listingsCtrl.create)
 app.put('/listings/:listingId', verifyToken, upload.array('photos'), listingsCtrl.update)
 app.delete('/listings/:listingId', verifyToken, listingsCtrl.deleteListing)
 
-app.listen(PORT, () => {
 //message routes
 app.get('/messages/:roomId', verifyToken, messagesCtrl.index)
 app.get('/messages', verifyToken, messagesCtrl.conversations)
