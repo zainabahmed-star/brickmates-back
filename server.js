@@ -31,6 +31,7 @@ const commentsCtrl = require('./controllers/comments')
 const messagesCtrl = require('./controllers/messages')
 const queueCtrl = require('./controllers/queue')
 const buildMatchCtrl = require('./controllers/buildMatch')
+const videoCtrl = require('./controllers/video');
 
 const verifyToken = require('./middleware/verify-token')
 const Message = require('./models/message')
@@ -89,6 +90,8 @@ app.get('/queue/:queueId/status', verifyToken, queueCtrl.status)
 //buildmatch routes
 app.get('/matches/:matchId', verifyToken, buildMatchCtrl.show)
 app.put('/matches/:matchId', verifyToken, buildMatchCtrl.update)
+
+app.get('/video-token', verifyToken, videoCtrl.getToken);
 
 io.on('connection', (socket) => {
   console.log('Socket connected: ', socket.id)
