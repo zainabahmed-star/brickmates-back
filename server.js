@@ -74,6 +74,8 @@ app.get('/themes' ,verifyToken, setsCtrl.themes)
 
 app.post('/builds/:buildId/comments', verifyToken, commentsCtrl.create)
 app.delete('/comments/:commentId', verifyToken, commentsCtrl.deleteComment)
+
+
 app.get('/listings', verifyToken, listingsCtrl.index)
 app.get('/listings/:listingId', verifyToken, listingsCtrl.show)
 app.post('/listings', verifyToken, upload.array('photos'), listingsCtrl.create)
