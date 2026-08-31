@@ -71,16 +71,25 @@ app.delete('/builds/:buildId', verifyToken, buildsCtrl.deleteBuild)
 app.put('/builds/:buildId/like', verifyToken, buildsCtrl.likeToggle)
 app.get('/themes' ,verifyToken, setsCtrl.themes)
 
+<<<<<<< HEAD
+
+app.post('/builds/:buildId/comments', verifyToken, commentsCtrl.create)
+app.delete('/comments/:commentId', verifyToken, commentsCtrl.deleteComment)
+=======
 app.post('/builds/:buildId/comments', verifyToken, commentsCtrl.create)
 app.delete('/comments/:commentId', verifyToken, commentsCtrl.deleteComment)
 
 //listing routes
+>>>>>>> 2dfc4f115daaf08982c354d718ac3c6e69c7034c
 app.get('/listings', verifyToken, listingsCtrl.index)
 app.get('/listings/:listingId', verifyToken, listingsCtrl.show)
 app.post('/listings', verifyToken, upload.array('photos'), listingsCtrl.create)
 app.put('/listings/:listingId', verifyToken, upload.array('photos'), listingsCtrl.update)
 app.delete('/listings/:listingId', verifyToken, listingsCtrl.deleteListing)
 
+<<<<<<< HEAD
+app.listen(PORT, () => {
+=======
 //message routes
 app.get('/messages/:roomId', verifyToken, messagesCtrl.index)
 app.get('/messages', verifyToken, messagesCtrl.conversations)
@@ -130,5 +139,6 @@ socket.on('chat message', async (messageData) => {
 })
 
 server.listen(PORT, () => {
+>>>>>>> 2dfc4f115daaf08982c354d718ac3c6e69c7034c
   console.log(`The express app is ready on port ${PORT}! 😀`)
 })

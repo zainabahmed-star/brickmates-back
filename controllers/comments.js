@@ -8,6 +8,10 @@ try {
         return res.status(400).json({ err: 'Build not found.' })
     }
     req.body.author = req.user._id
+    console.log( req.user._id,"userID");
+    console.log(req.body.author,"author");
+    
+    
     build.comment.push(req.body)
     await build.save()
 
