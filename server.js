@@ -45,12 +45,8 @@ app.use(cors())
 app.use(express.json())
 app.use(morgan('dev'))
 
-// Routes go here
-// app.get('/auth/sign-token', authCtrl.signToken)
-// app.get('/auth/verify-token', authCtrl.verifyToken)
 app.post('/auth/sign-up', authCtrl.signUp)
 app.post('/auth/sign-in', authCtrl.signIn)
-
 
 //user routes
 app.get('/users', verifyToken, usersCtrl.index)
@@ -71,9 +67,6 @@ app.delete('/builds/:buildId', verifyToken, buildsCtrl.deleteBuild)
 app.put('/builds/:buildId/like', verifyToken, buildsCtrl.likeToggle)
 app.get('/themes' ,verifyToken, setsCtrl.themes)
 
-
-app.post('/builds/:buildId/comments', verifyToken, commentsCtrl.create)
-app.delete('/comments/:commentId', verifyToken, commentsCtrl.deleteComment)
 app.post('/builds/:buildId/comments', verifyToken, commentsCtrl.create)
 app.delete('/comments/:commentId', verifyToken, commentsCtrl.deleteComment)
 
