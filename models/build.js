@@ -37,7 +37,23 @@ buildSchema = new mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: "Set",
       }],
-    comment:[commentSchema]
+      comment:[commentSchema]
+},{ timestamps: true })
+
+commentSchema =new mongoose.Schema({
+    comment:{
+        type:String,
+        required: true,
+    },
+    author:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'User',
+        },
+buildId:{
+    type:mongoose.Schema.Types.ObjectId,
+    ref:'Build'
+},
+
 },{ timestamps: true })
 const Build = mongoose.model('Build', buildSchema)
 module.exports = Build
