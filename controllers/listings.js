@@ -53,6 +53,7 @@ const create = async (req, res) => {
             condition: req.body.condition,
             price: req.body.price,
             description: req.body.description,
+            theme: req.body.theme,
         }
  
         if (req.files && req.files.length > 0) {
