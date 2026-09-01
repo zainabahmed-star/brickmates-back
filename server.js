@@ -88,6 +88,7 @@ app.get('/messages', verifyToken, messagesCtrl.conversations)
 app.post('/queue', verifyToken, queueCtrl.create)
 app.delete('/queue/:queueId', verifyToken, queueCtrl.deleteQueue)
 app.get('/queue/:queueId/status', verifyToken, queueCtrl.status)
+app.get('/queue/counts', verifyToken, queueCtrl.counts)
 
 //buildmatch routes
 app.get('/matches/:matchId', verifyToken, buildMatchCtrl.show)
