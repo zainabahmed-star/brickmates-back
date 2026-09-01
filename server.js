@@ -59,7 +59,7 @@ app.put('/users/:userId/collection', verifyToken, usersCtrl.collectionToggle)
 app.get('/sets' , setsCtrl.index)
 app.get('/sets/search', setsCtrl.search)
 app.get('/sets/:setId', setsCtrl.show)
-
+app.put('/users/:userId/collection', verifyToken, usersCtrl.collectionToggle)
 //builds routes
 app.post('/builds' , verifyToken, upload.single('image'),buildsCtrl.create)
 app.get('/builds' , verifyToken, buildsCtrl.index)
@@ -74,6 +74,7 @@ app.post('/builds/:buildId/comments', verifyToken, commentsCtrl.create)
 app.delete('/comments/:commentId', verifyToken, commentsCtrl.deleteComment)
 
 
+//listing routes
 app.get('/listings', verifyToken, listingsCtrl.index)
 app.get('/listings/:listingId', verifyToken, listingsCtrl.show)
 app.post('/listings', verifyToken, upload.array('photos'), listingsCtrl.create)

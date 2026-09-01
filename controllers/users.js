@@ -63,6 +63,7 @@ const update = async (req, res) => {
 }
 
 const followToggle = async (req, res) => {
+    console.log('FOLLOW TOGGLE HIT - NEW CODE')
     try {
         const currentUser = await User.findById(req.user._id)
         const targetUser = await User.findById(req.params.userId)
@@ -74,8 +75,8 @@ const followToggle = async (req, res) => {
             return res.status(400).json({err: 'You cant follow youself.'})
         }
 
-        if (!currentUser.following) currentUser.following = []
-        if (!targetUser.followers) targetUser.followers = []
+        currentUser.following = currentUser.following || []
+        targetUser.followers = targetUser.followers || []
 
         const isFollowing = currentUser.following.includes(req.params.userId)
 
@@ -93,41 +94,37 @@ const followToggle = async (req, res) => {
         res.json(currentUser)
         
     } catch (err) {
+        console.log('FOLLOW TOGGLE ERROR:', err)
         res.status(400).json({err: err.message})
     }
 }
 
 const collectionToggle = async (req, res) => {
     try {
-        const user = await User.findById(req.params.userId)
-
-        if (!user) {
-            return res.status(404).json({ err: 'User not found.' })
-        }
+        const currentUser = await User.findById(req.user._id)
 
         if (req.params.userId !== req.user._id) {
             return res.status(403).json({ err: 'Unauthorized.' })
         }
 
+        currentUser.collectionSetIds = currentUser.collectionSetIds || []
+
         const { setId } = req.body
 
-        if (!user.collectionSetIds) {
-            user.collectionSetIds = []
-        }
+        const isInCollection = currentUser.collectionSetIds.includes(setId)
 
-        const isOwned = user.collectionSetIds.includes(setId)
-
-        if (isOwned) {
-            user.collectionSetIds.pull(setId)
+        if (isInCollection) {
+            currentUser.collectionSetIds.pull(setId)
         } else {
-            user.collectionSetIds.push(setId)
+            currentUser.collectionSetIds.push(setId)
         }
 
-        await user.save()
+        await currentUser.save()
 
-        res.json(user)
+        res.json(currentUser)
+
     } catch (err) {
-        res.status(400).json({err: err.message})
+        res.status(400).json({ err: err.message })
     }
 }
 
