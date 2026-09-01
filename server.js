@@ -71,7 +71,7 @@ app.get('/themes' ,verifyToken, setsCtrl.themes)
 
 
 app.post('/builds/:buildId/comments', verifyToken, commentsCtrl.create)
-app.delete('/comments/:commentId', verifyToken, commentsCtrl.deleteComment)
+app.delete('/builds/:buildId/comments/:commentId', verifyToken, commentsCtrl.deleteComment)
 
 
 //listing routes

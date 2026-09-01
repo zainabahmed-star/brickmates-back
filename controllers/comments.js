@@ -31,10 +31,14 @@ try {
 const deleteComment = async (req, res) => {
     try {
     const build = await Build.findById(req.params.buildId)
+    console.log(build,"b");
+    
      if (!build){
         return res.status(400).json({ err: 'Build not found.' })
     }
     const comment = build.comment.id(req.params.commentId)
+    console.log(comment,"check");
+    
     if (!comment){
             return res.status(400).json({err: 'Comment not found'})
         }
