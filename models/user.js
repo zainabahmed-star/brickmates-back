@@ -34,19 +34,17 @@ const userSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Set',
     },
-    following: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-    },
-    followers: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-    },
     collectionSetIds: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Set',
+    type: String,
 }],
-
+    following: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+    }],
+    followers: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+    }],
 }, {timestamps: true})
 
 userSchema.set('toJSON', {

@@ -63,6 +63,7 @@ const update = async (req, res) => {
 }
 
 const followToggle = async (req, res) => {
+    console.log('FOLLOW TOGGLE HIT - NEW CODE')
     try {
         const currentUser = await User.findById(req.user._id)
         const targetUser = await User.findById(req.params.userId)
@@ -73,6 +74,9 @@ const followToggle = async (req, res) => {
         if (req.params.userId === req.user._id) {
             return res.status(400).json({err: 'You cant follow youself.'})
         }
+
+        currentUser.following = currentUser.following || []
+        targetUser.followers = targetUser.followers || []
 
         const isFollowing = currentUser.following.includes(req.params.userId)
 
@@ -90,6 +94,7 @@ const followToggle = async (req, res) => {
         res.json(currentUser)
         
     } catch (err) {
+        console.log('FOLLOW TOGGLE ERROR:', err)
         res.status(400).json({err: err.message})
     }
 }
@@ -101,6 +106,8 @@ const collectionToggle = async (req, res) => {
         if (req.params.userId !== req.user._id) {
             return res.status(403).json({ err: 'Unauthorized.' })
         }
+
+        currentUser.collectionSetIds = currentUser.collectionSetIds || []
 
         const { setId } = req.body
 
