@@ -54,6 +54,7 @@ app.get('/users', verifyToken, usersCtrl.index)
 app.get('/users/:userId', verifyToken, usersCtrl.show)
 app.put('/users/:userId',verifyToken,upload.single('avatar'),usersCtrl.update)
 app.put('/users/:userId/follow', verifyToken, usersCtrl.followToggle)
+app.put('/users/:userId/collection', verifyToken, usersCtrl.collectionToggle)
 
 app.get('/sets' , setsCtrl.index)
 app.get('/sets/search', setsCtrl.search)

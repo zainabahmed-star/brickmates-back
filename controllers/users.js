@@ -74,6 +74,9 @@ const followToggle = async (req, res) => {
             return res.status(400).json({err: 'You cant follow youself.'})
         }
 
+        if (!currentUser.following) currentUser.following = []
+        if (!targetUser.followers) targetUser.followers = []
+
         const isFollowing = currentUser.following.includes(req.params.userId)
 
         if (isFollowing) {
@@ -94,9 +97,44 @@ const followToggle = async (req, res) => {
     }
 }
 
+const collectionToggle = async (req, res) => {
+    try {
+        const user = await User.findById(req.params.userId)
+
+        if (!user) {
+            return res.status(404).json({ err: 'User not found.' })
+        }
+
+        if (req.params.userId !== req.user._id) {
+            return res.status(403).json({ err: 'Unauthorized.' })
+        }
+
+        const { setId } = req.body
+
+        if (!user.collectionSetIds) {
+            user.collectionSetIds = []
+        }
+
+        const isOwned = user.collectionSetIds.includes(setId)
+
+        if (isOwned) {
+            user.collectionSetIds.pull(setId)
+        } else {
+            user.collectionSetIds.push(setId)
+        }
+
+        await user.save()
+
+        res.json(user)
+    } catch (err) {
+        res.status(400).json({err: err.message})
+    }
+}
+
 module.exports = {
     index,
     show,
     update,
-    followToggle
+    followToggle,
+    collectionToggle
 }
