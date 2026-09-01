@@ -144,7 +144,6 @@ const deleteBuild = async (req, res) => {
     res.status(500).json({ err: err.message });
   }
 };
-
 const likeToggle = async (req, res) => {
   try {
     const build = await Build.findById(req.params.buildId);
@@ -153,12 +152,16 @@ const likeToggle = async (req, res) => {
       return res.status(404).json({ err: 'Build not found.' });
     }
 
-    const isLiked = build.likes.includes(req.user._id);
+    if (!build.like) {
+      build.like = [];
+    }
+
+    const isLiked = build.like.includes(req.user._id);
 
     if (isLiked) {
-      build.likes.pull(req.user._id);
+      build.like.pull(req.user._id);
     } else {
-      build.likes.push(req.user._id);
+      build.like.push(req.user._id);
     }
 
     await build.save();
@@ -168,7 +171,6 @@ const likeToggle = async (req, res) => {
     res.status(400).json({ err: err.message });
   }
 };
-
 module.exports = {
   create,
   index,
