@@ -92,9 +92,26 @@ const status = async (req, res) => {
     }
 }
 
+const counts = async (req, res) => {
+    try {
+        const results = await QueueEntry.aggregate([
+            { $match: { status: 'waiting' } },
+            { $group: { _id: '$setNum', count: { $sum: 1 } } },
+        ])
 
+        const countsMap = {}
+        results.forEach((r) => {
+            countsMap[r._id] = r.count
+        })
+
+        res.json(countsMap)
+    } catch (err) {
+        res.status(500).json({ err: err.message })
+    }
+}
 module.exports = {
     create,
     deleteQueue,
-    status
+    status,
+    counts
 }
