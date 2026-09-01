@@ -66,7 +66,7 @@ const index = async (req, res) => {
 
 const show = async (req, res) => {
   try {
-    const build = await Build.findById(req.params.buildId).populate('owner');
+    const build = await Build.findById(req.params.buildId).populate('owner').populate('comment.author');
 
     if (!build) {
       return res.status(404).json({ err: 'Build not found' });
