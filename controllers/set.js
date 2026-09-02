@@ -1,6 +1,6 @@
-const axios = require('axios')
+const axios = require('axios');
 
-const REBRICKABLE_BASE_URL = 'https://rebrickable.com/api/v3/lego'
+const REBRICKABLE_BASE_URL = 'https://rebrickable.com/api/v3/lego';
 
 const mapSet = (set) => ({
   setNum: set.set_num,
@@ -8,70 +8,61 @@ const mapSet = (set) => ({
   year: set.year,
   pieceCount: set.num_parts,
   image: set.set_img_url,
-  themeId: set.theme_id,
-})
+});
 
 const index = async (req, res) => {
   try {
+    const page = Number(req.query.page) || 1;
+
     const response = await axios.get(`${REBRICKABLE_BASE_URL}/sets/`, {
-      headers: {
-        Authorization: `key ${process.env.REBRICKABLE_API_KEY}`,
-      },
-      params: {
-        page_size: 20,
-      },
-    })
+      headers: { Authorization: `key ${process.env.REBRICKABLE_API_KEY}` },
+      params: { page, page_size: 40 },
+    });
 
-    const sets = response.data.results.map(mapSet)
-
-    res.json(sets)
+    res.json({
+      results: response.data.results.map(mapSet),
+      hasMore: !!response.data.next,
+    });
   } catch (err) {
-    res.status(500).json({ err: err.message })
+    res.status(500).json({ err: err.message });
   }
-}
+};
 
 const search = async (req, res) => {
   try {
-    const { q } = req.query
+    const { q } = req.query;
+    const page = Number(req.query.page) || 1;
 
     const response = await axios.get(`${REBRICKABLE_BASE_URL}/sets/`, {
-      headers: {
-        Authorization: `key ${process.env.REBRICKABLE_API_KEY}`,
-      },
-      params: {
-        search: q,
-        page_size: 20,
-      },
-    })
+      headers: { Authorization: `key ${process.env.REBRICKABLE_API_KEY}` },
+      params: { search: q, page, page_size: 40 },
+    });
 
-    const sets = response.data.results.map(mapSet)
-
-    res.json(sets)
+    res.json({
+      results: response.data.results.map(mapSet),
+      hasMore: !!response.data.next,
+    });
   } catch (err) {
-    res.status(500).json({ err: err.message })
+    res.status(500).json({ err: err.message });
   }
-}
+};
 
 const show = async (req, res) => {
   try {
     const response = await axios.get(
       `${REBRICKABLE_BASE_URL}/sets/${req.params.setId}/`,
-      {
-        headers: {
-          Authorization: `key ${process.env.REBRICKABLE_API_KEY}`,
-        },
-      }
-    )
+      { headers: { Authorization: `key ${process.env.REBRICKABLE_API_KEY}` } }
+    );
 
-    res.status(200).json(mapSet(response.data))
+    res.status(200).json(mapSet(response.data));
   } catch (err) {
     if (err.response && err.response.status === 404) {
-      return res.status(404).json({ err: 'Set not found' })
+      return res.status(404).json({ err: 'Set not found' });
     }
-    console.error(err)
-    res.status(500).json({ err: err.message })
+    res.status(500).json({ err: err.message });
   }
-}
+};
+
 const themes = async (req, res) => {
   try {
     const response = await axios.get(`${REBRICKABLE_BASE_URL}/themes/`, {
@@ -88,11 +79,11 @@ const themes = async (req, res) => {
   } catch (err) {
     res.status(500).json({ err: err.message });
   }
-}//check merge
+};
 
 module.exports = {
   index,
   search,
   show,
   themes,
-}
+};
