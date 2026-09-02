@@ -67,7 +67,7 @@ app.get('/builds/:buildId', verifyToken, buildsCtrl.show)
 app.put('/builds/:buildId', verifyToken, upload.single('image'), buildsCtrl.update)
 app.delete('/builds/:buildId', verifyToken, buildsCtrl.deleteBuild)
 app.put('/builds/:buildId/like', verifyToken, buildsCtrl.likeToggle)
-app.get('/themes' ,verifyToken, setsCtrl.themes)
+app.get('/themes' , setsCtrl.themes)
 
 
 app.post('/builds/:buildId/comments', verifyToken, commentsCtrl.create)
