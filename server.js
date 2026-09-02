@@ -75,7 +75,7 @@ app.delete('/builds/:buildId/comments/:commentId', verifyToken, commentsCtrl.del
 
 
 //listing routes
-app.get('/listings', verifyToken, listingsCtrl.index)
+app.get('/listings', listingsCtrl.index)
 app.get('/listings/:listingId', verifyToken, listingsCtrl.show)
 app.post('/listings', verifyToken, upload.array('photos'), listingsCtrl.create)
 app.put('/listings/:listingId', verifyToken, upload.array('photos'), listingsCtrl.update)
