@@ -6,7 +6,7 @@ _The REST and real-time backend powering BrickMates — a social platform and ma
 
 ### Live API
 
-[Deployed API Link]()
+[Deployed API Link](https://brickmates-site.netlify.app)
 
 ### Client Repository
 
